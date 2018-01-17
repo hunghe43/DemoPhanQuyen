@@ -1,0 +1,77 @@
+﻿@using DemoPhanQuyen.Areas.Admin.Models
+@model DemoPhanQuyen.Areas.Admin.Models.EF.MyViewModel
+
+<form class="col-xs-7 col-sm-7 header-search-box" style="text-align:right" method="post">
+    <p>
+        <div class="form-inline">
+            <div class="row">
+
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        @Html.DropDownList("SL", new SelectList(Model.l_usergroup, "id", "name", ViewBag.hienthi), new { @class = "form-control", @id = "ddl", onchange = "this.form.submit();" })
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        @Html.DropDownList("ND", new SelectList(Model.l_user, "username", "fullname", ViewBag.name), new { @class = "form-control", @id = "ddl1" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+
+                    <button class="btn btn-primary" type="submit">Hiển thị</button>
+
+                </div>
+
+
+            </div>
+        </div>
+    </p>
+</form>
+
+@if (Model.l_per_group.Count != 0)
+{
+    <div style="margin-top:80px;" class="alert alert-success" id="successMessage"><h4 style="text-align:center">Cấp quyền thành công</h4></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Bordered Table</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Group Name</th>
+                            <th>Create</th>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                            <th>Index</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.l_role.Where(n => n.Parent_id == null))
+                        {
+                            var child = Model.l_role.Where(n => n.Parent_id == item.ID);
+                            <tr>
+                                <td style="text-align:center">@item.ID</td>
+                                @foreach (var i in child)
+                    {
+                        var per = Model.l_per_group;
+                        var per_user = Model.l_per_user;
+                                    <td style="text-align:center">
+                                        <input class="test" value="@i.ID" type="checkbox"
+                                               @foreach (var role in per) { if (i.ID == role.RoleID) {  @: checked disabled="disabled"
+                                                                                                                                                                                                                                                          } }
+                                               @foreach (var role_user in per_user) { if (i.ID == role_user.RoleID) {  @: checked
+                                                                                                                                                                                                                                                          } } />
+                                    </td>
+    }
+                            </tr>
+}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+        <button id="btnLuu" onclick="return check();" class="btn btn-primary" style="width:100px;height:40px;margin-left:900px;">Lưu</button>
+    }

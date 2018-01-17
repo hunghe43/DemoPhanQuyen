@@ -1,0 +1,61 @@
+﻿@model DemoPhanQuyen.Areas.Admin.Models.EF.MyViewModel
+
+<form class="col-xs-7 col-sm-7 header-search-box" style="text-align:right" method="post">
+    <p>
+        <div class="form-inline">
+            <div class="row">
+                <div class="col-lg-24">
+                    <div class="input-group">
+                        @Html.DropDownList("SL", new SelectList(Model.l_usergroup.Where(n => n.ID != "SUPERADMIN"), "id", "name", ViewBag.hienthi), new { @class = "form-control", @id = "ddl" })
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">Hiển thị</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </div>
+    </p>
+</form>
+@if (Model.l_per_group.Count != 0)
+{
+    <div style="margin-top:80px;" class="alert alert-success" id="successMessage"><h4 style="text-align:center">Cấp quyền thành công</h4></div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Bordered Table</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Group Name</th>
+                            <th>Create</th>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                            <th>Index</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var b in Model.l_role.Where(b => b.Parent_id == null))
+                        {
+                            <tr>
+                                <td>@b.Name</td>
+                                @foreach (var a in Model.l_role.Where(n => n.Parent_id == b.ID))
+                                {
+                                    <td style="text-align:center">
+                                        <input class="test" value="@a.ID" type="checkbox"
+                                               @foreach (var role in Model.l_per_group) { if (a.ID == role.RoleID) { @: checked
+                                                                                                  } } />
+
+                                    </td>
+    }
+                            </tr>
+}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+<button id="btnLuu" onclick="return check();" class="btn btn-primary" style="width:100px;height:40px;margin-left:900px;">Lưu</button>
+}

@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Index_Per_Group";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@Html.Action("tbl_role_per_group", "Home")
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+        $("#successMessage").hide();
+        function check() {
+            var usergroupid = $("#ddl").val();
+            var role_id = [];
+                    $('.test:checked').each(function () {
+                        role_id.push($(this).val());
+                    });
+                    var role_id_uncheck = [];
+                    $('.test:not(:checked)').each(function () {
+                        role_id_uncheck.push($(this).val());
+                    });
+                    if (role_id =="")
+                    {
+                        alert("Bạn chưa cấp quyền!");
+                    }
+                    else
+                    {
+                        $.ajax({
+                            url: '@Url.Action("Save_Group", "Home")',
+                            data: { role_id: role_id, usergroupid: usergroupid, role_id_uncheck: role_id_uncheck },
+                            type: 'POST',
+                            dataType: 'json',
+                            traditional: true,
+                            success: function (data) {
+                                $("#successMessage").show();
+                                $("#successMessage").delay(1300).slideUp();
+
+                            },
+                        });
+                    }
+        }
+</script>
+
+
+
